@@ -1,6 +1,10 @@
 #include <stdio.h>
+#include "thuvien.h"
+
 
 void main()
 {
-	printf("hello world \n");
+	function1_buoi_1();
 }
+
+
