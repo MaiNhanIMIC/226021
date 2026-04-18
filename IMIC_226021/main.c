@@ -4,7 +4,8 @@
 
 void main()
 {
-	function1_buoi_1();
+	buoi2_bai_4();
+
 }
 
 
