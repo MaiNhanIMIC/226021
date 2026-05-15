@@ -129,12 +129,16 @@
   <ItemGroup>
     <ClCompile Include="buoi1.c" />
     <ClCompile Include="buoi2.c" />
+    <ClCompile Include="buoi3.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thuvien.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BUOI3.md" />
+    <None Include="BUOI4.md" />
+    <None Include="BUOI5.md" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
