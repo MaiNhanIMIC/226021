@@ -27,10 +27,16 @@
     <ClCompile Include="buoi3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thuvien.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

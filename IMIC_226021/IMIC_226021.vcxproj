@@ -131,8 +131,10 @@
     <ClCompile Include="buoi2.c" />
     <ClCompile Include="buoi3.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="lib.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lib.h" />
     <ClInclude Include="thuvien.h" />
   </ItemGroup>
   <ItemGroup>
