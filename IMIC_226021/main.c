@@ -1,110 +1,34 @@
 ﻿#include <stdio.h>
-#include <string.h>
-#include <malloc.h>
-#include <stdlib.h>
-typedef struct
+#include <Windows.h>
+int global_val;
+HANDLE pipe_write;
+HANDLE pipe_read;
+DWORD WINAPI function(_In_ LPVOID lpParameter)
 {
-	char ten[32];
-	int tuoi;
-	float diem_toan;
-	float diem_van;
-}hoc_sinh_t;
+	while (1)
+	{
+		int ss_val_to_send;
+		ReadFile(pipe_read, &ss_val_to_send, sizeof(ss_val_to_send), NULL, NULL);
+		printf("function is running: %d...\n", ss_val_to_send);
+		Sleep(2000);
+	}
+	return 0;
+}
 
 int main()
 {
-	FILE* pf = fopen("C:\\Users\\Dell\\Downloads\\danh_sach_hoc_sinh.csv", "r");
-	if (pf == NULL)
+	// tạo một thread để thực thi hàm function
+	HANDLE thread_1 = CreateThread(NULL, 0, function, NULL, 0, NULL);
+	CreatePipe(&pipe_read, &pipe_write, NULL, 1024);
+
+	int ss_val = 0;
+	while (1)
 	{
-		printf("Mo file that bai \n");
-		return -1;
+		printf("main dang chay...\n");
+		ss_val++;
+		//global_val = ss_val; write ss_val vào biến global_val;
+		WriteFile(pipe_write, &ss_val, sizeof(ss_val), NULL, NULL);
+		Sleep(1000);
 	}
-	char file_data[2 * 1024] = { 0 };
-	char c = 0;
-	int index = 0;
-	do
-	{
-		c = fgetc(pf);
-		file_data[index] = c;
-		index++;
-	} while (c != -1);
-	fclose(pf);
-
-	printf("%s \n", file_data);
-
-	int line_num = 0;
-	for (int i = 0; i < index; i++)
-	{
-		if (file_data[i] == '\n')
-			line_num++;
-	}
-
-	//hoc_sinh_t danh_sach[line_num];
-	hoc_sinh_t* danh_sach = calloc(line_num - 1, sizeof(hoc_sinh_t));
-	char* temp = file_data + 28;
-	for (int i = 0; i < line_num - 1; i++)
-	{
-		char temp_buf[32] = { 0 };
-		int cnt = 0;
-		while (*temp != ',')
-		{
-			temp_buf[cnt] = *temp;
-			cnt++; temp++;
-		}
-		cnt = 0;
-		memcpy(danh_sach[i].ten, temp_buf, strlen(temp_buf));
-		memset(temp_buf, 0, sizeof(temp_buf));
-		temp++;
-
-		while (*temp != ',')
-		{
-			temp_buf[cnt] = *temp;
-			cnt++; temp++;
-		}
-
-		cnt = 0;
-		danh_sach[i].tuoi = atoi(temp_buf);
-		memset(temp_buf, 0, sizeof(temp_buf));
-		temp++;
-
-
-		while (*temp != ',')
-		{
-			temp_buf[cnt] = *temp;
-			cnt++; temp++;
-		}
-
-		cnt = 0;
-		danh_sach[i].diem_toan = atof(temp_buf);
-		memset(temp_buf, 0, sizeof(temp_buf));
-		temp++;
-
-		while (*temp != '\n')
-		{
-			temp_buf[cnt] = *temp;
-			cnt++; temp++;
-		}
-
-		cnt = 0;
-		danh_sach[i].diem_van = atof(temp_buf);
-		memset(temp_buf, 0, sizeof(temp_buf));
-		temp++;
-	}
-	float diem_trung_binh_cao_nhat = 0;
-	int vi_tri_cao_nhat = 0;
-	for (int i = 0; i < line_num - 1; i++)
-	{
-		printf("ten: %s \n", danh_sach[i].ten);
-		printf("\ttuoi: %d \n", danh_sach[i].tuoi);
-		printf("\tdiem toan: %.1f \n", danh_sach[i].diem_toan);
-		printf("\tdiem van: %.1f \n", danh_sach[i].diem_van);
-
-		float diem_trung_binh = (danh_sach[i].diem_toan + danh_sach[i].diem_van) / 2;
-		if (diem_trung_binh > diem_trung_binh_cao_nhat)
-		{
-			diem_trung_binh_cao_nhat = diem_trung_binh;
-			vi_tri_cao_nhat = i;
-		}
-	}
-	printf("hoc sinh gioi nhat la: %s \n", danh_sach[vi_tri_cao_nhat].ten);
-
+	return 0;
 }
